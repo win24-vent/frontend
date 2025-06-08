@@ -16,6 +16,8 @@ const BookingEventPage = () => {
          ticketQuantity: 1
         })
 
+        const [showConfirmation, setShowConfirmation] = useState(false)
+
     useEffect(() => {
         getEvent()
         
@@ -34,7 +36,7 @@ const BookingEventPage = () => {
       }
 
 
-/* uppdaterar formulär */
+/* uppdatera formulär */
   const handleChange = (e) => {
     const { name, value } = e.target
     setFormData(prev => ({ ...prev, [name]: value }))
@@ -50,11 +52,11 @@ const BookingEventPage = () => {
                 body: JSON.stringify(formData)
             })
     
-            if (!res.ok) { 
-                console.error("Booking failed")
+            if (!res.ok) {
+              console.error("Booking failed")
             } else {
-                console.log("Booking successful")
-                navigate('/')
+              console.log("Booking successful")
+              setShowConfirmation(true)
             }
         } catch (err) {
             console.error("Error submitting booking", err)
@@ -63,36 +65,50 @@ const BookingEventPage = () => {
 
    
     return (
-        <div>
-            <h1>Book Event - {event.title}</h1> 
-              <form onSubmit={handleSubmit} noValidate>
-                <div>
-                  <label>First Name</label>
-                  <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
-                </div>
-                <div>
-                  <label>Last Name</label>
-                  <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
-                </div>
-                <div>
-                  <label>E-mail</label>
-                  <input type="email" name="email" value={formData.email} onChange={handleChange} required />
-                </div>
-                <div>
-                  <label>Street Name</label>
-                  <input type="text" name="streetName" value={formData.streetName} onChange={handleChange} required />
-                </div>
-                <div>
-                  <label>Postal Code</label>
-                  <input type="text" name="postalCode" value={formData.postalCode} onChange={handleChange} required />
-                </div>
-                <div>
-                  <label>City</label>
-                  <input type="text" name="city" value={formData.city} onChange={handleChange} required />
-                </div>
-                <button type="submit">Book Now</button>
-             </form>       
+      <div className="booking-form">
+      {showConfirmation ? (
+        <div className="confirmation-message">
+          <h2>Booking Confirmed!</h2>
+          <p>Thank you for booking <strong>{event.title}</strong>.</p>
+          <p>You can now return to the event list.</p>
+          <button className="confirmation-button" onClick={() => navigate('/')}>
+            Back to Events
+          </button>
         </div>
+        ) : (
+          <>
+            <h1 className="page-title">Book Event</h1>
+            <h2 className="page-subtitle">{event.title}</h2>
+            <form onSubmit={handleSubmit} noValidate>
+              <div className="form-group">
+                <label>First Name</label>
+                <input type="text" name="firstName" value={formData.firstName} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Last Name</label>
+                <input type="text" name="lastName" value={formData.lastName} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>E-mail</label>
+                <input type="email" name="email" value={formData.email} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Street Name</label>
+                <input type="text" name="streetName" value={formData.streetName} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>Postal Code</label>
+                <input type="text" name="postalCode" value={formData.postalCode} onChange={handleChange} required />
+              </div>
+              <div className="form-group">
+                <label>City</label>
+                <input type="text" name="city" value={formData.city} onChange={handleChange} required />
+              </div>
+              <button type="submit" className="book-button">Book Now</button>
+            </form>
+          </>
+        )}
+      </div>
     )
 
 }

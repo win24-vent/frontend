@@ -22,10 +22,22 @@ const EventDetailsPage = () => {
 
     return (
         <div className="event-details">
-            <h1>{event.title}</h1>
-            <Link to={`/events/booking/${id}`}>Book Event</Link>
+          <div className="event-details-card">
+            <img
+              src={event.image || "/fallback.jpg"}
+              alt={event.title || "No image"}
+              className="event-details-image"
+            />
+            <div className="event-details-info">
+              <h2 className="event-title">{event.title}</h2>
+              <p><strong>Location:</strong> {event.location}</p>
+              <p><strong>Date:</strong> {new Date(event.eventDate).toLocaleString()}</p>
+              <p><strong>About Event:</strong> {event.description}</p>
+              <Link to={`/events/booking/${id}`} className="book-button">Book Event</Link>
+            </div>
+          </div>
         </div>
-    )
+      );
 }
 
 export default EventDetailsPage
